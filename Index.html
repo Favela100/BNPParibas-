@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BNP Paribas - Connexion</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #00795b;
+            --light-gray: #f5f5f5;
+            --dark-gray: #333;
+            --text-color: #555;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            background-color: var(--light-gray);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .login-container {
+            background-color: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        .login-container .logo {
+            width: 180px;
+            margin-bottom: 30px;
+        }
+
+        h2 {
+            color: var(--primary-color);
+            margin-bottom: 30px;
+            font-size: 2em;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: var(--dark-gray);
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1em;
+            box-sizing: border-box;
+        }
+
+        .btn {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 15px 25px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1.1em;
+            width: 100%;
+            margin-top: 20px;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: #005f47;
+        }
+
+        .error-message {
+            color: #d9534f;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="login-container">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/BNP_Paribas_logo.svg/2560px-BNP_Paribas_logo.svg.png" alt="Logo de BNP Paribas" class="logo">
+        <h2>Connexion</h2>
+        <form id="login-form">
+            <div class="form-group">
+                <label for="identifier">Identifiant</label>
+                <input type="text" id="identifier" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Mot de passe</label>
+                <input type="password" id="password" required>
+            </div>
+            <button type="submit" class="btn">Se connecter</button>
+            <div id="error-message" class="error-message"></div>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('login-form').addEventListener('submit', function(event) {
+            event.preventDefault(); // Empêche le rechargement de la page
+
+            const identifier = document.getElementById('identifier').value;
+            const password = document.getElementById('password').value;
+            const errorMessageDiv = document.getElementById('error-message');
+
+            // Identifiants corrects
+            const correctIdentifier = "1007332609";
+            const correctPassword = "070510";
+
+            if (identifier === correctIdentifier && password === correctPassword) {
+                // Redirection vers la page d'accueil si les identifiants sont corrects
+                errorMessageDiv.innerText = ""; // Efface tout message d'erreur précédent
+                
+                // Store a flag in localStorage to indicate successful login
+                localStorage.setItem('loggedIn', 'true');
+
+                // Simulate redirect to the "accueil" section of the main page
+                // For a real application, you would redirect to the actual home page URL
+                // For this example, we'll embed the homepage HTML directly or redirect to a file containing it.
+                // Since the request asks to "redirect towards the home page coding",
+                // we'll update the body's innerHTML with the provided home page code.
+                document.body.innerHTML = `
+                    <div class="header">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/BNP_Paribas_logo.svg/2560px-BNP_Paribas_logo.svg.png" alt="Logo de BNP Paribas" class="logo">
+                        <div class="header-info">
+                            <div id="date-time"></div>
+                            <div>Identifiant : 1007332609</div>
+                        </div>
+                    </div>
+
+                    <div class="container">
+                        <div class="main-content">
+                            <div id="accueil" class="content-section active">
+                                <h2><i class="fas fa-home"></i>Accueil</h2>
+                                <p><strong>Nom du titulaire :</strong> pierre valent</p>
+                                <p><strong>Solde :</strong></p>
+                                <div class="balance" id="balance">1,700,000.00 €</div>
+                                <p><small>Dernière connexion : <span id="last-login"></span></small></p>
+
+                                <h3>Dernières opérations</h3>
+                                <ul class="transaction-list">
+                                    <li class="transaction-item">
+                                        <div class="transaction-details">
+                                            <span class="transaction-motif">Prélèvement Loyer - Agence Immo</span>
+                                            <span class="transaction-date">05 juillet 2025</span>
+                                        </div>
+                                        <span class="transaction-amount">- 950,00 €</span>
+                                    </li>
+                                    <li class="transaction-item">
+                                        <div class="transaction-details">
+                                            <span class="transaction-motif">Achat Multimédia - FNAC</span>
+                                            <span class="transaction-date">03 juillet 2025</span>
+                                        </div>
+                                        <span class="transaction-amount">- 489,99 €</span>
+                                    </li>
+                                    <li class="transaction-item">
+                                        <div class="transaction-details">
+                                            <span class="transaction-motif">Courses - E.Leclerc</span>
+                                            <span class="transaction-date">02 juillet 2025</span>
+                                        </div>
+                                        <span class="transaction-amount">- 327,50 €</span>
+                                    </li>
+                                     <li class="transaction-item">
+                                        <div class="transaction-details">
+                                            <span class="transaction-motif">Virement - Martin Dupont</span>
+                                            <span class="transaction-date">30 juin 2025</span>
+                                        </div>
+                                        <span class="transaction-amount">- 700,00 €</span>
+                                    </li>
+                                </ul>
+                                </div>
+
+                            <div id="virement" class="content-section">
+                                <h2><i class="fas fa-exchange-alt"></i>Effectuer un virement</h2>
+                                <form id="transfer-form">
+                                    <div class="form-group">
+                                        <label for="rib">RIB du destinataire</label>
+                                        <input type="text" id="rib" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="name">Nom du destinataire</label>
+                                        <input type="text" id="name" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="email">Adresse email du destinataire</label>
+                                        <input type="email" id="email" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="amount">Montant (€)</label>
+                                        <input type="number" id="amount" required>
+                                    </div>
+                                    <button type="submit" class="btn">Envoyer</button>
+                                </form>
+                            </div>
+
+                            <div id="compte" class="content-section">
+                                <h2><i class="fas fa-credit-card"></i>Informations du Compte</h2>
+                                <div class="card-info">
+                                    <h4>Informations de la carte bancaire</h4>
+                                    <p><strong>Numéro de carte :</strong> **** **** **** 8765</p>
+                                    <p><strong>Date d'expiration :</strong> 12/27</p>
+                                    <p><strong>Titulaire :</strong> pierre valent</p>
+                                </div>
+                            </div>
+
+                            <div id="contact" class="content-section">
+                                <h2><i class="fas fa-envelope"></i>Contacter le Service Client</h2>
+                                <p>Vous pouvez nous envoyer un message directement ici. Nous vous répondrons dans les plus brefs délais.</p>
+                                <form id="contact-form">
+                                    <div class="form-group">
+                                        <label for="message">Votre message</label>
+                                        <textarea id="message" rows="8" required></textarea>
+                                    </div>
+                                    <button type="submit" class="btn">Envoyer le message</button>
+                                </form>
+                            </div>
+                        </div>
+
+                        <nav class="bottom-nav">
+                            <div class="nav-item active" onclick="showSection('accueil', this)">
+                                <i class="fas fa-home"></i>
+                                <span>Accueil</span>
+                            </div>
+                            <div class="nav-item" onclick="showSection('virement', this)">
+                                <i class="fas fa-exchange-alt"></i>
+                                <span>Virement</span>
+                            </div>
+                            <div class="nav-item" onclick="showSection('compte', this)">
+                                <i class="fas fa-credit-card"></i>
+                                <span>Compte</span>
+                            </div>
+                            <div class="nav-item" onclick="showSection('contact', this)">
+                                <i class="fas fa-envelope"></i>
+                                <span>Contact</span>
+                            </div>
+                            <div class="nav-item logout-button" onclick="logout()">
+                                <i class="fas fa-sign-out-alt"></i>
+                                <span>Déconnexion</span>
+                            </div>
+                        </nav>
+                    </div>
+
+                    <script>
+                        function showSection(sectionId, element) {
+                            // Gérer les sections de contenu
+                            document.querySelectorAll('.content-section').forEach(section => {
+                                section.classList.remove('active');
+                            });
+                            document.getElementById(sectionId).classList.add('active');
+
+                            // Gérer l'état actif du bouton de navigation
+                            document.querySelectorAll('.nav-item').forEach(item => {
+                                item.classList.remove('active');
+                            });
+                            element.classList.add('active');
+                        }
+
+                        function updateDateTime() {
+                            const now = new Date();
+                            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
+                            document.getElementById('date-time').innerText = now.toLocaleDateString('fr-FR', options);
+                            if(document.getElementById('last-login')) {
+                                 document.getElementById('last-login').innerText = now.toLocaleString('fr-FR');
+                            }
+                        }
+
+                        updateDateTime();
+                        setInterval(updateDateTime, 1000);
+
+                        document.getElementById('transfer-form').addEventListener('submit', function(event) {
+                            event.preventDefault();
+
+                            const rib = document.getElementById('rib').value;
+                            const name = document.getElementById('name').value;
+                            const email = document.getElementById('email').value;
+                            const amount = parseFloat(document.getElementById('amount').value);
+
+                            if (isNaN(amount) || amount <= 0) {
+                                alert("Veuillez entrer un montant valide.");
+                                return;
+                            }
+
+                            let currentBalance = parseFloat(document.getElementById('balance').innerText.replace(/\s/g, '').replace('€', '').replace(',', '.'));
+                            if (amount > currentBalance) {
+                                alert("Solde insuffisant pour effectuer ce virement.");
+                                return;
+                            }
+
+                            // Déduire le montant du solde
+                            currentBalance -= amount;
+                            document.getElementById('balance').innerText = currentBalance.toLocaleString('fr-FR', {minimumFractionDigits: 2, maximumFractionDigits: 2}) + ' €';
+                            
+                            alert("Virement de " + amount.toLocaleString('fr-FR', {style: 'currency', currency: 'EUR'}) + " effectué avec succès !");
+                            
+                            // Appeler la fonction pour envoyer le bordereau par email (simulé)
+                            sendReceiptEmail(rib, name, email, amount);
+
+                            this.reset(); // Réinitialise le formulaire après l'envoi
+                        });
+
+                        function sendReceiptEmail(rib, name, email, amount) {
+                            const transferDate = new Date().toLocaleDateString('fr-FR', { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+                            const formattedAmount = amount.toLocaleString('fr-FR', {style: 'currency', currency: 'EUR'});
+                            const senderName = "pierre valent"; // Nom du titulaire du compte
+
+                            const subject = encodeURIComponent("Confirmation de virement BNP Paribas - " + formattedAmount);
+                            const body = encodeURIComponent(
+                                `Cher(e) ${name},\n\n` +
+                                `Nous confirmons le virement de ${formattedAmount} effectué par ${senderName} en votre faveur.\n\n` +
+                                `Détails de l'opération :\n` +
+                                `- Montant : ${formattedAmount}\n` +
+                                `- Date du virement : ${transferDate}\n` +
+                                `- Destinataire : ${name}\n` +
+                                `- RIB du destinataire : ${rib}\n\n` +
+                                `Nous vous remercions de votre confiance.\n\n` +
+                                `Cordialement,\n` +
+                                `Votre Banque BNP Paribas`
+                            );
+
+                            // Ouvre le client de messagerie par défaut avec les champs pré-remplis
+                            window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
+
+                            alert("Un brouillon d'email avec les détails du virement a été préparé pour " + email + ". Veuillez le vérifier et l'envoyer manuellement.");
+                        }
+                        
+                        document.getElementById('contact-form').addEventListener('submit', function(event) {
+                            event.preventDefault();
+                            const message = document.getElementById('message').value;
+                            const subject = "Message Service Client - pierre valent";
+                            window.location.href = "mailto:belleame2563@gmail.com?subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(message);
+                        });
+
+                        // Nouvelle fonction pour la déconnexion
+                        function logout() {
+                            alert("Vous avez été déconnecté.");
+                            // For a 'real' logout, you'd clear session storage/cookies and redirect to the login page.
+                            localStorage.removeItem('loggedIn'); // Clear the login flag
+                            // Reload the current page to go back to the login screen
+                            location.reload(); 
+                        }
+                    <\/script>
+                `;
+                // Re-execute scripts after updating innerHTML
+                const scripts = document.body.getElementsByTagName('script');
+                for (let i = 0; i < scripts.length; i++) {
+                    if (scripts[i].id !== 'login-script') { // Avoid re-executing the login script itself
+                        eval(scripts[i].innerText);
+                    }
+                }
+
+            } else {
+                errorMessageDiv.innerText = "Identifiant ou mot de passe incorrect.";
+            }
+        });
+    </script>
+
+</body>
+</html>
