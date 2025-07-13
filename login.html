@@ -1,0 +1,57 @@
+
+<!doctype html>
+<html lang="fr"> 
+<head> 
+  <meta charset="UTF-8"> 
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+  <title>BNP Paribas - Connexion</title> 
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"> 
+  <style>
+    :root { --primary-color: #00795b; --light-gray: #f5f5f5; --dark-gray: #333; }
+    body { font-family: Arial, sans-serif; margin: 0; background: var(--light-gray); display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+    .login-container { background: white; padding: 40px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); width: 100%; max-width: 400px; text-align: center; }
+    .login-container .logo { width: 180px; margin-bottom: 30px; }
+    h2 { color: var(--primary-color); margin-bottom: 30px; font-size: 2em; }
+    .form-group { margin-bottom: 20px; text-align: left; }
+    .form-group label { display: block; margin-bottom: 8px; font-weight: bold; color: var(--dark-gray); }
+    .form-group input { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 5px; font-size: 1em; box-sizing: border-box; }
+    .btn { background: var(--primary-color); color: white; padding: 15px 25px; border: none; border-radius: 5px; cursor: pointer; font-size: 1.1em; width: 100%; margin-top: 20px; transition: background 0.3s ease; }
+    .btn:hover { background: #005f47; }
+    .error-message { color: #d9534f; margin-top: 15px; font-weight: bold; }
+  </style> 
+</head> 
+<body> 
+  <div class="login-container"> 
+    <img src="logo_bnp.png" alt="Logo BNP Paribas" class="logo"> 
+    <h2>Connexion</h2> 
+    <form id="login-form"> 
+      <div class="form-group"> 
+        <label for="identifier">Identifiant</label> 
+        <input type="text" id="identifier" required> 
+      </div> 
+      <div class="form-group"> 
+        <label for="password">Mot de passe</label> 
+        <input type="password" id="password" required> 
+      </div> 
+      <button type="submit" class="btn">Se connecter</button> 
+      <div id="error-message" class="error-message"></div> 
+    </form> 
+  </div> 
+  <script>
+    document.getElementById('login-form').addEventListener('submit', function(event) {
+      event.preventDefault();
+      const identifier = document.getElementById('identifier').value;
+      const password = document.getElementById('password').value;
+      const errorMessageDiv = document.getElementById('error-message');
+      const correctIdentifier = "1007332609";
+      const correctPassword = "070510";
+      if (identifier === correctIdentifier && password === correctPassword) {
+        localStorage.setItem('connected', 'true');
+        window.location.href = "index.html";
+      } else {
+        errorMessageDiv.innerText = "Identifiant ou mot de passe incorrect.";
+      }
+    });
+  </script> 
+</body>
+</html>
