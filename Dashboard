@@ -1,0 +1,378 @@
+<!doctype html>
+<html lang="fr"> 
+ <head> 
+  <meta charset="UTF-8"> 
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+  <title>BNP Paribas - Mon Compte</title> 
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"> 
+  <style>
+    :root {
+      --primary-color: #00795b;
+      --light-gray: #f5f5f5;
+      --dark-gray: #333;
+      --text-color: #555;
+      --debit-color: #d9534f;
+      --active-color: #005a46;
+    }
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background: var(--light-gray);
+      padding-bottom: 80px; /* Espace pour la barre de navigation */
+    }
+    .header {
+      background: var(--primary-color);
+      color: #fff;
+      padding: 15px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .header .logo {
+      width: 140px;
+    }
+    .header-info {
+      text-align: right;
+      font-size: 0.8em;
+    }
+    .main-content {
+      padding: 20px;
+    }
+    .page {
+      display: none; /* Cache toutes les pages par défaut */
+    }
+    .page.active {
+      display: block; /* Affiche la page active */
+    }
+    .blink {
+      color: red;
+      animation: blink 1s step-start infinite;
+      font-weight: bold;
+    }
+    @keyframes blink {
+      50% { opacity: 0; }
+    }
+    .balance {
+      font-size: 2.5em;
+      font-weight: bold;
+      color: var(--dark-gray);
+      margin: 10px 0;
+    }
+    .transaction-list {
+        list-style: none;
+        padding: 0;
+        margin-top: 20px;
+    }
+    .transaction-item {
+        background: #fff;
+        padding: 15px;
+        border-bottom: 1px solid #eee;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .transaction-item .description {
+        font-weight: bold;
+        color: var(--dark-gray);
+    }
+    .transaction-item .amount {
+        font-weight: bold;
+        color: var(--debit-color);
+    }
+    .form-group {
+        margin-bottom: 15px;
+    }
+    .form-group label {
+        display: block;
+        margin-bottom: 5px;
+        color: var(--text-color);
+    }
+    .form-group input, .form-group textarea {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+    .btn {
+        background-color: var(--primary-color);
+        color: white;
+        padding: 12px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        width: 100%;
+        font-size: 1em;
+    }
+    .btn:hover {
+        background-color: var(--active-color);
+    }
+    /* Carte Bancaire */
+    .bank-card {
+        background: linear-gradient(45deg, #00795b, #009677);
+        color: white;
+        border-radius: 15px;
+        padding: 20px;
+        max-width: 350px;
+        margin: 20px auto;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        font-family: 'Courier New', Courier, monospace;
+    }
+    .bank-card .card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 15px;
+    }
+    .bank-card .card-header span {
+        font-weight: bold;
+        font-size: 1.2em;
+    }
+    .bank-card .card-header .fa-cc-visa {
+        font-size: 2.5em;
+    }
+    .bank-card .card-chip {
+        width: 50px;
+        height: 40px;
+        background: #ffc875;
+        border-radius: 6px;
+        margin-bottom: 15px;
+    }
+    .bank-card .card-number {
+        font-size: 1.5em;
+        letter-spacing: 2px;
+        margin-bottom: 20px;
+        text-align: center;
+    }
+    .bank-card .card-footer {
+        display: flex;
+        justify-content: space-between;
+        font-size: 0.9em;
+        text-transform: uppercase;
+    }
+    .bank-card .card-footer .card-label {
+        display: block;
+        font-size: 0.7em;
+        color: #eee;
+        margin-bottom: 3px;
+    }
+    /* Barre de navigation */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background: white;
+      display: flex;
+      justify-content: space-around;
+      box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
+      z-index: 1000;
+    }
+    .nav-item {
+      flex-grow: 1;
+      text-align: center;
+      padding: 10px 0;
+      cursor: pointer;
+      color: var(--text-color);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8em;
+    }
+    .nav-item i {
+      font-size: 1.5em;
+      margin-bottom: 4px;
+    }
+    .nav-item.active {
+      color: var(--primary-color);
+    }
+    .nav-item.logout-button {
+      color: var(--debit-color);
+    }
+  </style> 
+ </head> 
+ <body> 
+  <div class="header"> 
+   <img src="logo_bnp.png" alt="Logo BNP Paribas" class="logo"> 
+   <div class="header-info"> 
+    <div id="date-time"></div> 
+    <div>
+     Identifiant : 1007332609
+    </div> 
+   </div> 
+  </div> 
+  <div class="main-content"> 
+   <div id="accueil" class="page active"> 
+    <h2>Accueil</h2> 
+    <p><strong>Nom du titulaire :</strong> Pierre Valent</p> 
+    <p><strong>Solde :</strong></p> 
+    <div class="balance">
+     1,700,000.00 €
+    </div> 
+    <p><span class="blink">COMPTE BLOQUÉ</span></p> 
+    <h3>Dernières Opérations</h3> 
+    <ul class="transaction-list"> 
+     <li class="transaction-item"> 
+      <div> 
+       <div class="description">
+        Virement SEPA - John Doe
+       </div> 
+       <div class="date">
+        12/07/2025
+       </div> 
+      </div> 
+      <div class="amount">
+       - 250.00 €
+      </div> </li> 
+     <li class="transaction-item"> 
+      <div> 
+       <div class="description">
+        Paiement CB - SUPER U
+       </div> 
+       <div class="date">
+        12/07/2025
+       </div> 
+      </div> 
+      <div class="amount">
+       - 87.60 €
+      </div> </li> 
+     <li class="transaction-item"> 
+      <div> 
+       <div class="description">
+        Virement reçu - Jane Smith
+       </div> 
+       <div class="date">
+        11/07/2025
+       </div> 
+      </div> 
+      <div class="amount" style="color: green;">
+       + 1,500.00 €
+      </div> </li> 
+     <li class="transaction-item"> 
+      <div> 
+       <div class="description">
+        Prélèvement - Netflix
+       </div> 
+       <div class="date">
+        10/07/2025
+       </div> 
+      </div> 
+      <div class="amount">
+       - 15.99 €
+      </div> </li> 
+     <li class="transaction-item"> 
+      <div> 
+       <div class="description">
+        Virement permanent - Loyer
+       </div> 
+       <div class="date">
+        05/07/2025
+       </div> 
+      </div> 
+      <div class="amount">
+       - 750.00 €
+      </div> </li> 
+    </ul> 
+   </div> 
+   <div id="virement" class="page"> 
+    <h2>Effectuer un virement</h2> 
+    <div class="form-group"> <label for="beneficiary">Bénéficiaire (IBAN)</label> 
+     <input type="text" id="beneficiary" name="beneficiary" placeholder="FR76..."> 
+    </div> 
+    <div class="form-group"> <label for="amount">Montant</label> 
+     <input type="text" id="amount" name="amount" placeholder="0.00 €"> 
+    </div> 
+    <div class="form-group"> <label for="reason">Motif du virement</label> 
+     <input type="text" id="reason" name="reason" placeholder="Ex: Loyer, Cadeau..."> 
+    </div> 
+    <div class="form-group"> <label for="email">Gmail de confirmation</label> 
+     <input type="email" id="email" name="email" placeholder="exemple@gmail.com"> 
+    </div> <button class="btn" onclick="sendTransfer()">Valider le virement</button> 
+   </div> 
+   <div id="carte" class="page"> 
+    <h2>Ma Carte Bancaire</h2> 
+    <div class="bank-card"> 
+     <div class="card-header"> <span>BNP Paribas</span> <i class="fab fa-cc-visa"></i> 
+     </div> 
+     <div class="card-chip"></div> 
+     <div class="card-number">
+      4976 6678 1234 4863
+     </div> 
+     <div class="card-footer"> 
+      <div> <span class="card-label">Titulaire</span> <span>PIERRE VALENT</span> 
+      </div> 
+      <div> <span class="card-label">Expire Fin</span> <span>12/28</span> 
+      </div> 
+     </div> 
+    </div> 
+   </div> 
+   <div id="assistance" class="page"> 
+    <h2>Assistance Clientèle</h2> 
+    <p>Pour toute question ou problème avec votre compte, vous pouvez contacter notre assistance.</p> <a href="mailto:marineforestier731@gmail.com?subject=Demande d'assistance - Compte 1007332609" class="btn" style="text-decoration: none; text-align:center;"> <i class="fas fa-envelope"></i> Envoyer un message </a> 
+    <p style="font-size: 0.8em; color: #777; margin-top: 15px;">En cliquant sur ce bouton, votre application de messagerie s'ouvrira pour envoyer un email à notre service client.</p> 
+   </div> 
+  </div> 
+  <nav class="bottom-nav"> 
+   <div class="nav-item active" onclick="showPage('accueil')"> <i class="fas fa-home"></i> <span>ACCUEIL</span> 
+   </div> 
+   <div class="nav-item" onclick="showPage('virement')"> <i class="fas fa-paper-plane"></i> <span>VIREMENT</span> 
+   </div> 
+   <div class="nav-item" onclick="showPage('carte')"> <i class="fas fa-credit-card"></i> <span>CARTE</span> 
+   </div> 
+   <div class="nav-item" onclick="showPage('assistance')"> <i class="fas fa-headset"></i> <span>ASSISTANCE</span> 
+   </div> 
+   <div class="nav-item logout-button" onclick="logout()"> <i class="fas fa-sign-out-alt"></i> <span>DÉCONNEXION</span> 
+   </div> 
+  </nav> 
+  <script>
+    // Vérification de la connexion
+    if (localStorage.getItem('connected') !== 'true') {
+      // Pour l'exemple, on suppose que l'utilisateur est connecté.
+      // Dans un cas réel, décommenter la ligne suivante :
+      // window.location.href = "login.html";
+    }
+
+    // Fonction de déconnexion
+    function logout() {
+      localStorage.removeItem('connected');
+      alert("Déconnexion réussie.");
+      // Dans un cas réel, décommenter la ligne suivante :
+      // window.location.href = "login.html";
+    }
+
+    // Affichage de la date et l'heure
+    document.getElementById('date-time').innerText = new Date().toLocaleString('fr-FR', { dateStyle: 'short', timeStyle: 'short' });
+
+    // Gestion de la navigation
+    function showPage(pageId) {
+        document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
+        document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+        document.getElementById(pageId).classList.add('active');
+        const navItem = document.querySelector(`.nav-item[onclick="showPage('${pageId}')"]`);
+        if (navItem) {
+            navItem.classList.add('active');
+        }
+    }
+
+    // Fonction pour simuler le virement
+    function sendTransfer() {
+        const beneficiary = document.getElementById('beneficiary').value;
+        const amount = document.getElementById('amount').value;
+        const email = document.getElementById('email').value;
+
+        if (!beneficiary || !amount || !email) {
+            alert('Veuillez remplir tous les champs du formulaire.');
+            return;
+        }
+
+        if (!email.includes('@')) { // Simple validation d'email
+            alert('Veuillez saisir une adresse email valide.');
+            return;
+        }
+
+        alert(`Un virement de ${amount} € a été initié pour ${beneficiary}. Un message de confirmation sera envoyé à ${email}.`);
+    }
+  </script> 
+ </body>
+</html>
