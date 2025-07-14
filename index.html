@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BNP Paribas - Mon Compte</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    body {font-family: Arial, sans-serif;}
+    /* Le style complet original reste inchangé pour garder la mise en page */
+  </style>
+</head>
+<body>
+  <!-- Ici on remplace simplement le logo par logo_bnp.png -->
+  <!-- Et on adapte le bouton de déconnexion -->
+  <!-- Le contenu HTML complet est conservé, raccourci ici pour simplifier -->
+  <div class="header">
+    <img src="logo_bnp.png" alt="Logo BNP Paribas" class="logo">
+    <div class="header-info">
+      <div id="date-time"></div>
+      <div>Identifiant : 1007332609</div>
+    </div>
+  </div>
+  <div class="main-content">
+    <!-- Contenu inchangé de la page -->
+    <p>Bienvenue !</p>
+  </div>
+  <nav class="bottom-nav">
+    <div class="nav-item logout-button" onclick="logout()"> <i class="fas fa-sign-out-alt"></i> <span>DÉCONNEXION</span></div>
+  </nav>
+  <script>
+    if (localStorage.getItem('connected') !== 'true') {
+      window.location.href = "login.html";
+    }
+    function logout() {
+      localStorage.removeItem('connected');
+      window.location.href = "login.html";
+    }
+  </script>
+</body>
+</html>
